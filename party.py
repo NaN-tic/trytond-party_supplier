@@ -21,8 +21,7 @@ class Invoice:
     @classmethod
     def __setup__(cls):
         super(Invoice, cls).__setup__()
-        supplier_domain = [If(Eval('type').in_(['in_invoice',
-                        'in_credit_note']),
+        supplier_domain = [If(Eval('type') == 'in',
                 ('supplier', '=', True),
                 (),
                 )]
