@@ -6,16 +6,16 @@ from trytond.pyson import If, Eval
 from trytond.modules.party.party import STATES, DEPENDS
 
 __all__ = ['Party', 'Invoice', 'Purchase']
-__metaclass__ = PoolMeta
 
 
 class Party:
+    __metaclass__ = PoolMeta
     __name__ = 'party.party'
-
     supplier = fields.Boolean('Supplier', states=STATES, depends=DEPENDS)
 
 
 class Invoice:
+    __metaclass__ = PoolMeta
     __name__ = 'account.invoice'
 
     @classmethod
@@ -30,6 +30,7 @@ class Invoice:
 
 
 class Purchase:
+    __metaclass__ = PoolMeta
     __name__ = 'purchase.purchase'
 
     @classmethod
