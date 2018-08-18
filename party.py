@@ -7,7 +7,6 @@ from trytond.modules.party.party import STATES, DEPENDS
 __all__ = ['Party']
 
 
-class Party:
-    __metaclass__ = PoolMeta
+class Party(metaclass=PoolMeta):
     __name__ = 'party.party'
     supplier = fields.Boolean('Supplier', states=STATES, depends=DEPENDS)
