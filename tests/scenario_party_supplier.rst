@@ -91,11 +91,11 @@ Create product::
     >>> template.purchasable = True
     >>> template.salable = True
     >>> template.list_price = Decimal('10')
-    >>> template.cost_price = Decimal('5')
     >>> template.cost_price_method = 'fixed'
     >>> template.account_category = account_category
     >>> template.save()
     >>> product.template = template
+    >>> product.cost_price = Decimal('5')
     >>> product.save()
 
 Create payment term::
@@ -103,21 +103,6 @@ Create payment term::
     >>> payment_term = create_payment_term()
     >>> payment_term.save()
 
-Create an Inventory::
-
-    >>> Inventory = Model.get('stock.inventory')
-    >>> Location = Model.get('stock.location')
-    >>> storage, = Location.find([
-    ...         ('code', '=', 'STO'),
-    ...         ])
-    >>> inventory = Inventory()
-    >>> inventory.location = storage
-    >>> inventory_line = inventory.lines.new(product=product)
-    >>> inventory_line.quantity = 100.0
-    >>> inventory_line.expected_quantity = 0.0
-    >>> inventory.click('confirm')
-    >>> inventory.state
-    'done'
 
 Create Product Supplier::
 
@@ -131,14 +116,22 @@ Create Product Supplier::
     >>> product_supplier_price.sequence = 1
     >>> product_supplier_price.quantity = Decimal(1.0)
     >>> product_supplier_price.unit_price = Decimal(12)
-    >>> product_supplier_price = ProductSupplierPrice()
-    >>> product_supplier.prices.append(product_supplier_price)
-    >>> product_supplier_price.sequence = 2
-    >>> product_supplier_price.quantity = Decimal(10.0)
-    >>> product_supplier_price.unit_price = Decimal(10)
     >>> product_supplier.save()
 
-Purchase 5 products::
+    >>> product_supplier = ProductSupplier()
+    >>> product_supplier.product = template
+    >>> product_supplier.party = customer
+    >>> product_supplier_price = ProductSupplierPrice()
+    >>> product_supplier.prices.append(product_supplier_price)
+    >>> product_supplier_price.sequence = 1
+    >>> product_supplier_price.quantity = Decimal(1.0)
+    >>> product_supplier_price.unit_price = Decimal(12)
+    >>> product_supplier.save()  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    trytond.model.modelstorage.DomainValidationError: ...
+
+Purchase to Supplier::
 
     >>> Purchase = Model.get('purchase.purchase')
     >>> PurchaseLine = Model.get('purchase.line')
@@ -150,9 +143,21 @@ Purchase 5 products::
     >>> purchase.lines.append(purchase_line)
     >>> purchase_line.product = product
     >>> purchase_line.quantity = 1.0
-    >>> purchase_line.unit_price ==  Decimal(12)
-    True
-    >>> purchase_line.quantity = 10.0
-    >>> purchase_line.unit_price ==  Decimal(10)
-    True
     >>> purchase.save()
+
+Purchase to Customer::
+
+    >>> Purchase = Model.get('purchase.purchase')
+    >>> PurchaseLine = Model.get('purchase.line')
+    >>> purchase = Purchase()
+    >>> purchase.party = customer
+    >>> purchase.payment_term = payment_term
+    >>> purchase.invoice_method = 'order'
+    >>> purchase_line = PurchaseLine()
+    >>> purchase.lines.append(purchase_line)
+    >>> purchase_line.product = product
+    >>> purchase_line.quantity = 1.0
+    >>> purchase.save()  # doctest: +IGNORE_EXCEPTION_DETAIL
+    Traceback (most recent call last):
+        ...
+    trytond.model.modelstorage.DomainValidationError: ...
