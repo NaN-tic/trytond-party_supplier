@@ -13,6 +13,7 @@ def register():
         module='party_supplier', type_='model')
     Pool.register(
         invoice.Invoice,
+        invoice.InvoiceLine,
         depends=['account_invoice'],
         module='party_supplier', type_='model')
     Pool.register(
