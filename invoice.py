@@ -3,7 +3,7 @@
 from trytond.pool import PoolMeta
 from trytond.pyson import If, Eval
 
-__all__ = ['Invoice']
+__all__ = ['Invoice', 'InvoiceLine']
 
 
 class Invoice(metaclass=PoolMeta):
@@ -18,3 +18,17 @@ class Invoice(metaclass=PoolMeta):
                 )]
         cls.party.domain.append(supplier_domain)
         cls.party.depends.append('type')
+
+
+class InvoiceLine(metaclass=PoolMeta):
+    __name__ = 'account.invoice.line'
+
+    @classmethod
+    def __setup__(cls):
+        super(InvoiceLine, cls).__setup__()
+        supplier_domain = [If(Eval('invoice_type') == 'in',
+                ('supplier', '=', True),
+                (),
+                )]
+        cls.party.domain.append(supplier_domain)
+        cls.party.depends.append('invoice_type')
