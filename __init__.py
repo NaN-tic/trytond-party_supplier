@@ -4,6 +4,7 @@ from trytond.pool import Pool
 from . import party
 from . import invoice
 from . import purchase
+from . import purchase_request
 from . import product
 
 
@@ -20,4 +21,8 @@ def register():
         purchase.Purchase,
         product.ProductSupplier,
         depends=['purchase'],
+        module='party_supplier', type_='model')
+    Pool.register(
+        purchase_request.CreatePurchaseAskParty,
+        depends=['purchase_request'],
         module='party_supplier', type_='model')
