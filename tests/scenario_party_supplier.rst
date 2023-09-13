@@ -136,6 +136,7 @@ Purchase to Supplier::
     >>> purchase.lines.append(purchase_line)
     >>> purchase_line.product = product
     >>> purchase_line.quantity = 1.0
+    >>> purchase_line.unit_price = product.cost_price
     >>> purchase.save()
 
 Purchase to Customer::
@@ -150,6 +151,7 @@ Purchase to Customer::
     >>> purchase.lines.append(purchase_line)
     >>> purchase_line.product = product
     >>> purchase_line.quantity = 1.0
+    >>> purchase_line.unit_price = product.cost_price
     >>> purchase.save()  # doctest: +IGNORE_EXCEPTION_DETAIL
     Traceback (most recent call last):
         ...
