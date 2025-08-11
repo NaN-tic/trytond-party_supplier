@@ -6,6 +6,7 @@ from . import invoice
 from . import purchase
 from . import purchase_request
 from . import product
+from . import shipment
 
 
 def register():
@@ -21,6 +22,10 @@ def register():
         purchase.Purchase,
         product.ProductSupplier,
         depends=['purchase'],
+        module='party_supplier', type_='model')
+    Pool.register(
+        shipment.ShipmentIn,
+        depends=['stock'],
         module='party_supplier', type_='model')
     Pool.register(
         purchase_request.CreatePurchaseAskParty,

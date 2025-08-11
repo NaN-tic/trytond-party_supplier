@@ -15,3 +15,16 @@ class CreatePurchaseAskParty(metaclass=PoolMeta):
             cls.party.domain += [supplier_domain]
         else:
             cls.party.domain = [supplier_domain]
+
+class PurchaseRequest(metaclass=PoolMeta):
+    __name__ = 'purchase.request'
+
+    @classmethod
+    def __setup__(cls):
+        super().__setup__()
+
+        supplier_domain = ('supplier', '=', True)
+        if cls.party.domain:
+            cls.party.domain += [supplier_domain]
+        else:
+            cls.party.domain = [supplier_domain]
