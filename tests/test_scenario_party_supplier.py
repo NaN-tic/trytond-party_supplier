@@ -94,7 +94,7 @@ class Test(unittest.TestCase):
         ProductSupplier = Model.get('purchase.product_supplier')
         ProductSupplierPrice = Model.get('purchase.product_supplier.price')
         product_supplier = ProductSupplier()
-        product_supplier.product = template
+        product_supplier.template = template
         product_supplier.party = supplier
         product_supplier_price = ProductSupplierPrice()
         product_supplier.prices.append(product_supplier_price)
@@ -103,7 +103,7 @@ class Test(unittest.TestCase):
         product_supplier_price.unit_price = Decimal(12)
         product_supplier.save()
         product_supplier = ProductSupplier()
-        product_supplier.product = template
+        product_supplier.template = template
         product_supplier.party = customer
         product_supplier_price = ProductSupplierPrice()
         product_supplier.prices.append(product_supplier_price)
